@@ -57,14 +57,11 @@ var getCityweathers = function (city) {
 var getWeatherData = function (lat, lon) {
   var api='https://api.openweathermap.org/data/2.5/onecall?lat='+lat+'&lon='+lon+'&appid=2833a982a66eaa0d8e5212abe0cef25e&units=imperial'
 
-  fetch(api)
-
-  
+  fetch(api)  
     .then(function (response) {
       if (response.ok) {
         //console.log(response);
         return response.json()
-
       }
         else {
       alert('Error: ' + response.statusText);
@@ -76,6 +73,12 @@ var getWeatherData = function (lat, lon) {
            console.log(data.current.wind_speed);
            console.log(data.current.uvi);
            displayweathers(data, city);
+           var dt = new Date();
+           document.getElementById("weathers-container").innerHTML = dt.toLocaleString();
+           document.querySelector("#temp").innerText = data.current.temp;
+           document.querySelector("#humidity").innerText = data.current.humidity;
+           document.querySelector("#wind_speed").innerText = data.current.wind_speed;
+           document.querySelector("#uvi").innerText = data.current.uvi;
           })
 
      
