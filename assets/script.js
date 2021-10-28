@@ -58,21 +58,28 @@ var getWeatherData = function (lat, lon) {
   var api='https://api.openweathermap.org/data/2.5/onecall?lat='+lat+'&lon='+lon+'&appid=2833a982a66eaa0d8e5212abe0cef25e&units=imperial'
 
   fetch(api)
+
+  
     .then(function (response) {
       if (response.ok) {
         //console.log(response);
         return response.json()
+
       }
         else {
       alert('Error: ' + response.statusText);
     }
     })
     .then(function (data) {
-            console.log(data);
+           console.log(data.current.temp);
+           console.log(data.current.humidity);
+           console.log(data.current.wind_speed);
+           console.log(data.current.uvi);
            displayweathers(data, city);
           })
-      
-    
+
+     
+
     .catch(function (error) {
       alert('Unable to connect to ');
     });
@@ -87,9 +94,8 @@ var formSubmitHandler = function (event) {
 
   if (city) {
     getCityweathers(city);
-
-    weatherContainerEl.textContent = '';
-    nameInputEl.value = '';
+    weatherContainerEl.textContent = "";
+    nameInputEl.value = "";
   } else {
     alert('Please enter a city');
   }
@@ -109,10 +115,6 @@ var buttonClickHandler = function (event) {
     weatherContainerEl.textContent = 'TESTING';
   }
 };
-
-
-
-
 
 var getFeaturedweathers = function (language) {
   var apiUrl = 'https://api..com/search/weathersitories?q=' + language + '+is:featured&sort=help-wanted-issues';
@@ -166,7 +168,6 @@ var displayweathers = function (weathers, searchTerm) {
 
 cityFormEl.addEventListener('submit', formSubmitHandler);
 //cityButtonsEl.addEventListener('click', buttonClickHandler);
-
 
 
 
