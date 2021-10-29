@@ -9,24 +9,11 @@
 // Useful links:
 // API documentation https://openweathermap.org/api
 
-//////////////////////////////////////////////////////////
-
-// Reverse geocoding (address lookup)
-// City by Lat Long API: Reverse geocoding (address lookup)
-// API Key: AIzaSyAH0-m1vPeHFzAxySg669ttfNDtsjMh5c0
-// Adding the API key to your request
-//You must include an API key with every Geocoding API request. In the following example, replace YOUR_API_KEY with your API key.
-//https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=YOUR_API_KEY
-//HTTPS is required for requests that use an API key.
-
-///////////////////////////////////////////////////////////
-
 var cityFormEl = document.querySelector('#city-form');
 var cityButtonsEl = document.querySelector('#language-buttons');
 var nameInputEl = document.querySelector('#city');
 var weatherContainerEl = document.querySelector('#weather-container');
 var lookUpValue = document.querySelector('#weather-search-term');
-
 
 var getCityweathers = function (city) {
   var apiUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + city + '&appid=2833a982a66eaa0d8e5212abe0cef25e';
@@ -59,7 +46,7 @@ var getWeatherData = function (lat, lon) {
   fetch(api)  
     .then(function (response) {
       if (response.ok) {
-        //console.log(response);
+        console.log(response);
         return response.json()
       }
         else {
@@ -68,19 +55,26 @@ var getWeatherData = function (lat, lon) {
     })
 
     .then(function (data) {
+         
            console.log(data.current.temp);
            console.log(data.current.humidity);
            console.log(data.current.wind_speed);
-           console.log(data.current.uvi);
-           displayWeathers(data, city);
-
-           var dt = new Date();
-           
-           document.getElementById('#time').innerText = dt.toLocaleString();
+           console.log(data.current.main);
+           console.log(data.current.description);
+           console.log(data.current.icon);
+           displayWeathers(data, city);        
            document.querySelector('#temp').innerText = data.current.temp;
            document.querySelector('#humidity').innerText = data.current.humidity;
            document.querySelector('#wind_speed').innerText = data.current.wind_speed;
            document.querySelector('#uvi').innerText = data.current.uvi;
+           document.querySelector('#main').innerText = data.current.main;
+           document.querySelector('#description').innerText = data.current.description;
+           document.querySelector('#icon').innerText = data.current.icon;
+           
+           //stuck on the time. it was working...
+           var dt = new Date();  
+           document.getElementById('#time').innerText = dt.toLocaleString();
+                  
           })
     .catch(function (error) {
       
