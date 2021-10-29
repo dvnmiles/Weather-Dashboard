@@ -43,16 +43,15 @@ var getCityweathers = function (city) {
     })
 
     .then(function (data) {
-            console.log(data);
-            getWeatherData(data[0].lat,data[0].lon)
+            console.log(data[0].name,data[0].state);
+            getWeatherData(data[0].lat,data[0].lon);
+            document.querySelector('#weather-city').innerHTML = data[0].name;
+            document.querySelector('#weather-state').innerHTML = data[0].state;
           })
-      
-    
     .catch(function (error) {
       alert('Unable to connect to ');
     });
 };
-
 
 var getWeatherData = function (lat, lon) {
   var api='https://api.openweathermap.org/data/2.5/onecall?lat='+lat+'&lon='+lon+'&appid=2833a982a66eaa0d8e5212abe0cef25e&units=imperial'
