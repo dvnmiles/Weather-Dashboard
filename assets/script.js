@@ -1,3 +1,16 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Weather API Key (https://home.openweathermap.org/api_keys): 2833a982a66eaa0d8e5212abe0cef25e
 // API: https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude={part}&appid=2833a982a66eaa0d8e5212abe0cef25e
 // API call example: api.openweathermap.org/data/2.5/onecall?lat=38.8&lon=12.09&callback=test
