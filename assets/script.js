@@ -16,143 +16,157 @@ var weatherContainerEl = document.querySelector('#weather-container');
 var lookUpValue = document.querySelector('#weather-search-term');
 
 var getCityweathers = function (city) {
-  var apiUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + city + '&appid=2833a982a66eaa0d8e5212abe0cef25e';
+    var apiUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + city + '&appid=2833a982a66eaa0d8e5212abe0cef25e';
 
-  fetch(apiUrl)
-    .then(function (response) {
-      if (response.ok) {
-        //console.log(response);
-        return response.json()
-      }
-        else {
-      alert('Error: ' + response.statusText);
-    }
-    })
+    fetch(apiUrl)
+        .then(function (response) {
+            if (response.ok) {
+                //console.log(response);
+                return response.json()
+            }
+            else {
+                alert('Error: ' + response.statusText);
+            }
+        })
 
-    .then(function (data) {
-            console.log(data[0].name,data[0].state);
-            getWeatherData(data[0].lat,data[0].lon);
+        .then(function (data) {
+            console.log(data[0].name, data[0].state);
+            getWeatherData(data[0].lat, data[0].lon);
             document.querySelector('#weather-metro').innerHTML = data[0].name;
             document.querySelector('#weather-state').innerHTML = data[0].state;
-          })
-    .catch(function (error) {
-      alert('Unable to connect to location ');
-    });
+        })
+        .catch(function (error) {
+            alert('Unable to connect to location ');
+        });
 };
 
 var getWeatherData = function (lat, lon) {
-  var api='https://api.openweathermap.org/data/2.5/onecall?lat='+lat+'&lon='+lon+'&appid=2833a982a66eaa0d8e5212abe0cef25e&units=imperial'
+    var api = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&appid=2833a982a66eaa0d8e5212abe0cef25e&units=imperial'
 
-  fetch(api)  
-    .then(function (response) {
-      if (response.ok) {
-        console.log(response);
-        return response.json()
-      }
-        else {
-      alert('Error: ' + response.statusText);
-    }
-    })
+    fetch(api)
+        .then(function (response) {
+            if (response.ok) {
 
-    .then(function (data) {
-         
-           console.log(data.current.temp);
-           console.log(data.current.humidity);
-           console.log(data.current.wind_speed);
-           console.log(data.current.main);
-           console.log(data.current.description);
-           console.log(data.current.icon);
-           displayWeathers(data, city);        
-           document.querySelector('#temp').innerText = data.current.temp;
-           document.querySelector('#humidity').innerText = data.current.humidity;
-           document.querySelector('#wind_speed').innerText = data.current.wind_speed;
-           document.querySelector('#uvi').innerText = data.current.uvi;
-           document.querySelector('#main').innerText = data.current.main;
-           document.querySelector('#description').innerText = data.current.description;
-           document.querySelector('#icon').innerText = data.current.icon;
-           
-           //stuck on the time. it was working...
-           var dt = new Date();  
-           document.getElementById('#time').innerText = dt.toLocaleString();
-                  
-          })
-    .catch(function (error) {
-      
-      alert('Unable to connect to weather');
-      console.log(error);
-    });
+                return response.json()
+
+            }
+            else {
+                alert('Error: ' + response.statusText);
+            }
+        })
+
+        .then(function (data) {
+
+            var iconImage = "http://openweathermap.org/img/wn/" + data.current.weather[0].icon + ".png"
+
+            console.log(data);
+            console.log(data.current.temp);
+            console.log(data.current.humidity);
+            console.log(data.current.wind_speed);
+            console.log(data.current.uvi);
+            console.log(data.current.weather[0].main);
+            console.log(data.current.weather[0].description);
+            console.log(data.current.weather[0].icon);
+            displayWeathers(data, city);
+            document.querySelector('#temp').innerText = data.current.temp;
+            document.querySelector('#humidity').innerText = data.current.humidity;
+            document.querySelector('#wind_speed').innerText = data.current.wind_speed;
+            document.querySelector('#uvi').innerText = data.current.uvi;          
+            document.querySelector('#main').innerText = data.current.weather[0].main;
+            document.querySelector('#description').innerText = data.current.weather[0].description;
+            document.querySelector('#icon').setAttribute("src", iconImage);
+            var dt = new Date();
+            document.getElementById('time').innerText = dt.toLocaleString();
+////////////////////Stuck Here getting uvi to be a color
+            var uvIndex = data.current.uvi;
+                    ('#uvIndex').html(`UV Index: <span id="uvi"> ${uvIndex}</span>`);
+                    if (uvi >= 0 && uvi < 3) {
+                        $('#uvIndex').attr("class", "uv-favorable");
+                    } else if (uvi >= 3 && uvi < 8) {
+                        $('#uvIndex').attr("class", "uv-moderate");
+                    } else if (uvi >= 8) {
+                        $('#uvIndex').attr("class", "uv-severe");
+                    }
+
+        })
+        .catch(function (error) {
+
+            //alert('Unable to connect to weather');
+            console.log(error);
+        });
 };
 
 var formSubmitHandler = function (event) {
-  event.preventDefault();
+    event.preventDefault();
 
-  var city = nameInputEl.value.trim();
+    var city = nameInputEl.value.trim();
 
-  if (city) {
-    getCityweathers(city);
-    weatherContainerEl.textContent = "";
-    nameInputEl.value = "";
-  } 
-  else {
-    alert('Please enter a city');
-  }
+    if (city) {
+        getCityweathers(city);
+        //////Something is worng here now...
+        weatherContainerEl.textContent = "";
+        nameInputEl.value = "";
+    }
+    else {
+        alert('Please enter a city');
+    }
 };
 
 var buttonClickHandler = function (event) {
-  var language = event.target.getAttribute('data-language');
+    var language = event.target.getAttribute('data-language');
 
-  if (language) {
-    getFeaturedweathers(language);
+    if (language) {
+        getFeaturedweathers(language);
 
-    weatherContainerEl.textContent = 'TESTING';
-  }
+        weatherContainerEl.textContent = 'TESTING';
+    }
 };
 
 var getFeaturedweathers = function (language) {
-  var apiUrl = 'https://api..com/search/weathersitories?q=' + language + '+is:featured&sort=help-wanted-issues';
+    var apiUrl = 'https://api..com/search/weathersitories?q=' + language + '+is:featured&sort=help-wanted-issues';
 
-  fetch(apiUrl).then(function (response) {
-    if (response.ok) {
-      response.json().then(function (data) {
-        displayWeathers(data.items, language);
-      });
-    } else {
-      alert('Error: ' + response.statusText);
-    }
-  });
+    fetch(apiUrl).then(function (response) {
+        if (response.ok) {
+            response.json().then(function (data) {
+                displayWeathers(data.items, language);
+            });
+        } else {
+            alert('Error: ' + response.statusText);
+        }
+    });
 };
 
 var displayWeathers = function (weathers, searchTerm) {
-  if (weathers.length === 0) {
-    weatherContainerEl.textContent = 'No weather found.';
-    return;
-  }
-  displayWeathers.textContent = searchTerm;
-  for (var i = 0; i < weathers.length; i++) {
-    var weatherName = weathers[i].owner.login + '/' + weathers[i].name;
-    var weatherEl = document.createElement('a');
-    weatherEl.classList = 'list-item flex-row justify-space-between align-center';
-    weatherEl.setAttribute('href', './single-weather.html?weather=' + weatherName);
-
-    var titleEl = document.createElement('span');
-    titleEl.textContent = weatherName;
-
-    weatherEl.appendChild(titleEl);
-
-    var statusEl = document.createElement('span');
-    statusEl.classList = 'flex-row align-center';
-
-    if (weathers[i].open_issues_count > 0) {
-      statusEl.innerHTML =
-        "<i class='fas fa-times status-icon icon-danger'></i>" + weathers[i].open_issues_count + ' issue(s)';
-    } else {
-      statusEl.innerHTML = "<i class='fas fa-check-square status-icon icon-success'></i>";
+    if (weathers.length === 0) {
+        weatherContainerEl.textContent = 'No weather found.';
+        return;
     }
+    displayWeathers.textContent = searchTerm;
+    for (var i = 0; i < weathers.length; i++) {
+        var weatherName = weathers[i].owner.login + '/' + weathers[i].name;
+        var weatherEl = document.createElement('a');
+        weatherEl.classList = 'list-item flex-row justify-space-between align-center';
+        weatherEl.setAttribute('href', './single-weather.html?weather=' + weatherName);
 
-    weatherEl.appendChild(statusEl);
+        var titleEl = document.createElement('span');
+        titleEl.textContent = weatherName;
 
-    weatherContainerEl.appendChild(weatherEl);
-  }
+        weatherEl.appendChild(titleEl);
+
+        var statusEl = document.createElement('span');
+        statusEl.classList = 'flex-row align-center';
+
+        if (weathers[i].open_issues_count > 0) {
+            statusEl.innerHTML =
+                "<i class='fas fa-times status-icon icon-danger'></i>" + weathers[i].open_issues_count + ' issue(s)';
+        } else {
+            statusEl.innerHTML = "<i class='fas fa-check-square status-icon icon-success'></i>";
+        }
+
+        weatherEl.appendChild(statusEl);
+
+        weatherContainerEl.appendChild(weatherEl);
+    }
 };
 
 cityFormEl.addEventListener('submit', formSubmitHandler);
@@ -161,4 +175,10 @@ cityFormEl.addEventListener('submit', formSubmitHandler);
 
 
 ////////////////////////////////////////////////////////////
+
+
+
+
+
+
 
