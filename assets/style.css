@@ -577,21 +577,15 @@
 
 /* UV coloring scheme for UV display */
 .uv-favorable{
-  background-color: green;
-  border-radius: 5px;
-  color: white;
+  color: green;
 }
 
 .uv-moderate{
-  background-color: orange;
-  border-radius: 5px;
-  color: white;
+  color: yellow;
 }
 
 .uv-severe{
-  background-color: red;
-  border-radius: 5px;
-  color: white;
+  color: red;
 }
 
 /* Media queries */
@@ -609,3 +603,5 @@
       justify-content: center;
   }
 }
+
+

@@ -10,18 +10,20 @@
 // API documentation https://openweathermap.org/api
 
 var cityFormEl = document.querySelector('#city-form');
+var searchFormEl = document.querySelector('#search-form')
 var cityButtonsEl = document.querySelector('#language-buttons');
 var nameInputEl = document.querySelector('#city');
 var weatherContainerEl = document.querySelector('#weather-container');
 var lookUpValue = document.querySelector('#weather-search-term');
-
+var fiveDay = document.getElementById('fiveDay')
 var getCityweathers = function (city) {
     var apiUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + city + '&appid=2833a982a66eaa0d8e5212abe0cef25e';
 
     fetch(apiUrl)
         .then(function (response) {
+            console.log(response);
             if (response.ok) {
-                //console.log(response);
+                
                 return response.json()
             }
             else {
@@ -58,6 +60,11 @@ var getWeatherData = function (lat, lon) {
         .then(function (data) {
 
             var iconImage = "http://openweathermap.org/img/wn/" + data.current.weather[0].icon + ".png"
+            var todayEl = document.querySelector('#today');
+            var tempEl = document.createElement('p')
+            var humidityEl = document.createElement('p')
+            var wind_speedEl = document.createElement('p')
+
 
             console.log(data);
             console.log(data.current.temp);
@@ -71,34 +78,42 @@ var getWeatherData = function (lat, lon) {
             document.querySelector('#temp').innerText = data.current.temp;
             document.querySelector('#humidity').innerText = data.current.humidity;
             document.querySelector('#wind_speed').innerText = data.current.wind_speed;
-            document.querySelector('#uvi').innerText = data.current.uvi;          
+            
+            document.querySelector('#uvi').innerText = data.current.uvi;  
+
+            if (data.current.uvi<3){
+                document.querySelector('#uvi').setAttribute("class", "uv-favorable");
+            }    
+            else if (data.current.uvi >= 3 && data.current.uvi < 6){
+                document.querySelector('#uvi').setAttribute("class", "uv-moderate");;
+            }
+            else {
+                document.querySelector('#uvi').setAttribute("class", "uv-severe");;
+            }   
+
             document.querySelector('#main').innerText = data.current.weather[0].main;
             document.querySelector('#description').innerText = data.current.weather[0].description;
             document.querySelector('#icon').setAttribute("src", iconImage);
             var dt = new Date();
             document.getElementById('time').innerText = dt.toLocaleString();
-////////////////////Stuck Here getting uvi to be a color
-            var uvIndex = data.current.uvi;
-                    ('#uvIndex').html(`UV Index: <span id="uvi"> ${uvIndex}</span>`);
-                    if (uvi >= 0 && uvi < 3) {
-                        $('#uvIndex').attr("class", "uv-favorable");
-                    } else if (uvi >= 3 && uvi < 8) {
-                        $('#uvIndex').attr("class", "uv-moderate");
-                    } else if (uvi >= 8) {
-                        $('#uvIndex').attr("class", "uv-severe");
-                    }
+
+//START of fiveDay forcast
+            fiveDayForecast(data);
+            
+
 
         })
-        .catch(function (error) {
+    }
 
-            //alert('Unable to connect to weather');
-            console.log(error);
-        });
-};
+       //var fiveDayForecast = function (data){
+           // var outerDiv = 
 
-var formSubmitHandler = function (event) {
+            //cerate element, create for loop, append to outter div, outter div gets appended to five day forcast variable at the top 
+        //}
+
+ var formSubmitHandler = function (event) {
     event.preventDefault();
-
+console.log(event);
     var city = nameInputEl.value.trim();
 
     if (city) {
@@ -136,11 +151,13 @@ var getFeaturedweathers = function (language) {
     });
 };
 
+//This function is creating button history
 var displayWeathers = function (weathers, searchTerm) {
     if (weathers.length === 0) {
         weatherContainerEl.textContent = 'No weather found.';
         return;
     }
+    
     displayWeathers.textContent = searchTerm;
     for (var i = 0; i < weathers.length; i++) {
         var weatherName = weathers[i].owner.login + '/' + weathers[i].name;
@@ -169,14 +186,12 @@ var displayWeathers = function (weathers, searchTerm) {
     }
 };
 
-cityFormEl.addEventListener('submit', formSubmitHandler);
+searchFormEl.addEventListener('submit', formSubmitHandler);
 //cityButtonsEl.addEventListener('click', buttonClickHandler);
 
 
 
 ////////////////////////////////////////////////////////////
-
-
 
 
 

@@ -3,70 +3,60 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <meta content="ie=edge" http-equiv="X-UA-Compatible" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,400i,700&display=swap" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <link rel="stylesheet" href="./assets/style.css" />
   <title>Weather Dashboard</title>
 </head>
 
-<body class="flex-column min-100-vh">
-
-
-  <header class="hero">
-    <h1 class="app-title"><i class="fas fa-cloud-sun-rain"></i> Weather Dashboard</h1>
-    <p>Search for and see the weather outlook for multiple cities so you can plan a trip accordingly.</p>
+<body>
+  <header class="container-fluid text-center text-white bg-dark p-2 weather-header">
+    <h1>Weather Dashboard</h1>
   </header>
 
-  <main class="flex-row justify-space-between">
-    <div class="col-12 col-md-4">
-      <div class="card">
-        <h3 class="card-header"><i class="fas fa-city"> Search by City</i></h3>
-        <form id="city-form" class="card-body">
-          <label class="form-label" for="city">City</label>
-          <input name="city" id="city" type="text" autofocus="true" class="form-input" />
-
-
-          <button type="submit" class="btn">See Weather</button>
-        </form>
-      </div>
-      <!-- ADDITIONAL FILTER
-        <div class="card">
-          <h3 class="card-header text-uppercase">Search By Topic</h3>
-          <div id="language-buttons" class="card-body">
-            <button data-language="javascript" class="btn">JavaScript</button>
-            <button data-language="html" class="btn">HTML</button>
-            <button data-language="css" class="btn">CSS</button>
+  <!-- max-width for ultra wide resolutions -->
+  <div class="container-fluid" style="max-width: 1400px">
+    <div class="row">
+      <aside class="col-lg-3 pb-3">
+        <h2 id="form-heading" class="mt-1 h3 form-label">
+          Search for a City:
+        </h2>
+        <form id="search-form" class="form">
+          <div class="form-inline form-group">
+            <div class="input-group">
+              <input class="form-input weather-search" type="text" id="city" placeholder="San Diego"
+                aria-labelledby="form-heading" aria-controls="today forecast" />
+              <div class="input-group-append">
+                <button type="submit" class="btn search-button" id="city-form" aria-label="submit search">
+                  Search
+                </button>
+                <hr class="hr weather-hr" />
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
--->
-      <div class="col-12 col-md-8">
-        <h2 class="subtitle">Showing weather forcase for:</h2>
-        <h2>City:</h2>
-        <h4 id="weather-metro"></h4>
-        <h2>State:</h2>
-        <h4 id="weather-state"></h4>
-        <h2>Date/Time:</h2>
-        <h4 id="time" class="weatherHTML"></h4>
-        <h2>Temperature:</h2>
-        <h4 id="temp" class="weatherHTML"></h4>
-        <h2>Humidity:</h2>
-        <h4 id="humidity" class="weatherHTML"></h4>
-        <h2>Wind Speed:</h2>
-        <h4 id="wind_speed" class="weatherHTML"></h4>
-        <h2>UV Index:</h2>
-        <h4 id="uvi" class="weatherHTML"></h4>
-        <h2>Conditions:</h2>
-        <h4 id="main" class="weatherHTML"></h4>
-        <h2>Details:</h2>
-        <h4 id="description" class="weatherHTML"></h4>
-        <h2>Weather Status Icon:</h2>
-        <img src="" id="icon" class="weatherHTML">
-      </div>
-  </main>
+        </form>
+        <div class="list-group" id="history"></div>
+      </aside>
 
+      <div class="col-lg-9 pb-3">
+        <section id="today" class="mt-3" role="region" aria-live="polite"></section>
+
+
+        <section id="forecast" class="row mt-3" role="region" aria-live="polite"></section>
+      </div>
+    </div>
+  </div>
+
+  <!-- use day.js to easily format dates -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.4/dayjs.min.js"
+    integrity="sha512-0fcCRl828lBlrSCa8QJY51mtNqTcHxabaXVLPgw/jPA5Nutujh6CbTdDgRzl9aSPYW/uuE7c4SffFUQFBAy6lg=="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.4/plugin/utc.min.js"
+    integrity="sha512-m00bfmYnAl3plEBlQfeQUhw/U2uvmw29V2+jxSWpAjankMWS+zAsjezbKWDEJNXqWq9o9qQZSOiA2RKDpa4D5w=="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.4/plugin/timezone.min.js"
+    integrity="sha512-pslqxxHAYPCxaSeFSmXXxDkLejD5dbFVC66aiVq0z4v7VTJBU+wqcG1OpNh4p3MjS2D6NCwz/H2QmSc7dXxryg=="
+    crossorigin="anonymous"></script>
   <script src="./assets/script.js"></script>
 </body>
 
