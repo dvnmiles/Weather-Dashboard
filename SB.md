@@ -302,3 +302,92 @@ getCurrentConditions();
 </body>
 </html>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ fiveDay(data)
+                .then(function (response) {
+                    if (response.ok) {
+                        return response.json()
+                    }
+                    else {
+                        alert('Error: ' + response.statusText);
+                    }
+                })
+
+                .then(function (data) {
+
+                    var iconImage = "http://openweathermap.org/img/wn/" + data.daily.weather[0].icon + ".png"
+                    var forcastEl = document.querySelector('#forecast');
+                    var tempForecastEl = document.createElement('p')
+                    var humidityForecastEl = document.createElement('p')
+                    var wind_speedForecaseEl = document.createElement('p')
+
+
+                    console.log(data);
+                    console.log(data.daily.temp);
+                    console.log(data.daily.humidity);
+                    console.log(data.daily.wind_speed);
+                    console.log(data.daily.uvi);
+                    console.log(data.daily.weather[0].main);
+                    console.log(data.daily.weather[0].description);
+                    console.log(data.daily.weather[0].icon);
+                    displayWeathers(data, city);
+                    document.querySelector('#temp').innerText = data.daily.temp;
+                    document.querySelector('#humidity').innerText = data.daily.humidity;
+                    document.querySelector('#wind_speed').innerText = data.daily.wind_speed;
+
+                    document.querySelector('#uvi').innerText = data.daily.uvi;
+
+                    if (data.daily.uvi < 3) {
+                        document.querySelector('#uvi').setAttribute("class", "uv-favorable");
+                    }
+                    else if (data.daily.uvi >= 3 && data.daily.uvi < 6) {
+                        document.querySelector('#uvi').setAttribute("class", "uv-moderate");;
+                    }
+                    else {
+                        document.querySelector('#uvi').setAttribute("class", "uv-severe");;
+                    }
+
+                    document.querySelector('#main').innerText = data.daily.weather[0].main;
+                    document.querySelector('#description').innerText = data.daily.weather[0].description;
+                    document.querySelector('#icon').setAttribute("src", iconImage);
+                    var dt = new Date();
+                    document.getElementById('time').innerText = dt.toLocaleString();
+
+
+
+                })
+        })
+
+       //var fiveDayForecast = function (data){
+           // var outerDiv = 
+
+            //cerate element, create for loop, append to outter div, outter div gets appended to five day forcast variable at the top 
+        //}
+
